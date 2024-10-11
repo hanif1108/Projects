@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Temperature Unit Change</title>
+    <style>
+      body {
+        background-color: #f5f5f5;
+        font-family: "Segoe UI", Arial, Helvetica, sans-serif, Geneva, Verdana,
+          sans-serif;
+        line-height: 1.5;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      .title {
+        font-size: 36px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+
+      .input-box-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .input-box-container h2 {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .input-box-container label {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .input-box-container input {
+        font-size: 16px;
+        padding: 5px;
+        border: 1px solid #ccc; /* Light gray border */
+        border-radius: 5px;
+        margin-bottom: 10px;
+      }
+
+      .input-box-container button {
+        font-size: 16px;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007aff;
+        color: white;
+        cursor: pointer;
+      }
+
+      .input-box-container button:hover {
+        background-color: #005bbb;
+      }
+
+      .input-box-container p {
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">Temperature Unit Change</h1>
+
+      <!-- Celsius to Fahrenheit -->
+      <div class="input-box-container">
+        <h2>From Celsius to Fahrenheit</h2>
+        <label for="input-boxC">Celsius: </label>
+        <input
+          type="number"
+          id="input-boxC"
+          placeholder="Enter temperature in Celsius"
+        />
+        <button class="CtoF">Convert</button>
+        <p id="resultF"></p>
+      </div>
+
+      <!-- Fahrenheit to Celsius -->
+      <div class="input-box-container">
+        <h2>From Fahrenheit to Celsius</h2>
+        <label for="input-boxF">Fahrenheit: </label>
+        <input
+          type="number"
+          id="input-boxF"
+          placeholder="Enter temperature in Fahrenheit"
+        />
+        <button class="FtoC">Convert</button>
+        <p id="resultC"></p>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Select elements for Celsius to Fahrenheit conversion
+        const CtoF = document.querySelector(".CtoF");
+        const inputBoxC = document.getElementById("input-boxC");
+        const resultF = document.getElementById("resultF");
+
+        // Select elements for Fahrenheit to Celsius conversion
+        const FtoC = document.querySelector(".FtoC");
+        const inputBoxF = document.getElementById("input-boxF");
+        const resultC = document.getElementById("resultC");
+
+        // Convert Celsius to Fahrenheit
+        CtoF.addEventListener("click", () => {
+          const tempC = inputBoxC.value;
+          const tempF = (tempC * 9) / 5 + 32;
+          resultF.innerHTML = `${tempC}°C is equal to ${tempF.toFixed(2)}°F`;
+        });
+
+        // Convert Fahrenheit to Celsius
+        FtoC.addEventListener("click", () => {
+          const tempF = inputBoxF.value;
+          const tempC = ((tempF - 32) * 5) / 9;
+          resultC.innerHTML = `${tempF}°F is equal to ${tempC.toFixed(2)}°C`;
+        });
+      });
+    </script>
+  </body>
+</html>

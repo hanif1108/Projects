@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f5f5f5;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .input-box-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      #input-box {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-right: 10px;
+      }
+
+      #add-btn {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      #add-btn:hover {
+        background-color: #0069d9;
+      }
+
+      #to-do-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      #to-do-list li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        padding: 10px;
+        background-color: #f5f5f5;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      #to-do-list li span {
+        flex: 1;
+        margin-right: 10px;
+      }
+
+      #to-do-list li button {
+        padding: 5px 10px;
+        background-color: #dc3545;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      #to-do-list li button:hover {
+        background-color: #c82333;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>To-Do List</h1>
+      <div class="input-box-container">
+        <input type="text" id="input-box" placeholder="Add a new task..." />
+        <button id="add-btn">Add Task</button>
+      </div>
+      <ul id="to-do-list"></ul>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const addBtn = document.getElementById("add-btn");
+        const inputBox = document.getElementById("input-box");
+        const toDoList = document.getElementById("to-do-list");
+
+        let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+        tasks.forEach((task) => renderTask(task));
+
+        addBtn.addEventListener("click", addTask);
+        inputBox.addEventListener("keypress", (e) => {
+          if (e.key === "Enter") {
+            addTask();
+          }
+        });
+
+        function addTask() {
+          const taskText = inputBox.value.trim();
+          if (taskText === "") {
+            inputBox.value = "";
+            inputBox.focus();
+            return;
+          }
+
+          const newTask = {
+            id: Date.now(),
+            text: taskText,
+            completed: false,
+          };
+          tasks.push(newTask);
+          saveTasks();
+          inputBox.value = "";
+          console.log(tasks);
+          renderTask(newTask);
+        }
+
+        function renderTask(task) {
+          const li = document.createElement("li");
+          li.classList.toggle("completed", task.completed);
+          li.dataset.id = task.id;
+          li.innerHTML = `
+            <span>${task.text}</span>
+            <button aria-label="Delete task">delete</button>`;
+          li.addEventListener("click", (e) => {
+            if (e.target.tagName === "BUTTON") {
+              deleteTask(task.id);
+            } else {
+              task.completed = !task.completed;
+              li.classList.toggle("completed", task.completed);
+              saveTasks();
+            }
+          });
+          toDoList.appendChild(li);
+        }
+
+        function deleteTask(id) {
+          tasks = tasks.filter((task) => task.id !== id);
+          saveTasks();
+          const liToDelete = toDoList.querySelector(`li[data-id="${id}"]`);
+          liToDelete.remove();
+        }
+
+        function saveTasks() {
+          localStorage.setItem("tasks", JSON.stringify(tasks));
+        }
+      });
+    </script>
+  </body>
+</html>
